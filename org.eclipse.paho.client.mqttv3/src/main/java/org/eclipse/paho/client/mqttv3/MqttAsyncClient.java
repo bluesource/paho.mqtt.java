@@ -116,7 +116,7 @@ public class MqttAsyncClient implements IMqttAsyncClient {
 	private MqttConnectOptions connOpts;
 	private Object userContext;
 	private Timer reconnectTimer; // Automatic reconnect timer
-	private static int reconnectDelay = 1000; // Reconnect delay, starts at 1
+	private static int reconnectDelay = 5000; // Reconnect delay, starts at 1
 												// second
 	private boolean reconnecting = false;
 	private static Object clientLock = new Object(); // Simple lock
@@ -1495,9 +1495,9 @@ public class MqttAsyncClient implements IMqttAsyncClient {
 		public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
 			// @Trace 502=Automatic Reconnect failed, rescheduling: {0}
 			log.fine(CLASS_NAME, methodName, "502", new Object[] { asyncActionToken.getClient().getClientId() });
-			if (reconnectDelay < 128000) {
+			/*if (reconnectDelay < 128000) {
 				reconnectDelay = reconnectDelay * 2;
-			}
+			}*/
 			rescheduleReconnectCycle(reconnectDelay);
 		}
 
